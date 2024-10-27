@@ -37,8 +37,6 @@
                                     <th>Sl</th>
                                     <th>Actions</th>
                                     <th>Selfie</th>
-                                    <th>Qr Code</th>
-                                    <th>OBD Image</th>
                                     <th>Name</th>
                                     <th>Check In Date Time</th>
                                 </tr>
@@ -52,23 +50,14 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                           <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="{{URL::to('admin/mapView/1')}}" target="_blank"><i class="bx bx-edit-alt me-1"></i> Map</a>
+                                            
                                             {{-- <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a> --}}
                                           </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <img src="{{ URL::to('public/assets/admin/img/logo/selfie.jpeg') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/logo/selfie.jpeg') }}')">
-                                    </td>
-                                    <td>
-                                       
-                                        <small>Vehicle Number: WB W3 1234</small><br>
-                                        <small>Owner name : Jhon</small><br>
-                                        <small>Vehicle model : Test</small><br>
-                                        <small>Contact number : 123456789 </small>
-                                    </td>
-                                    <td>
-                                        <img src="{{ URL::to('public/assets/admin/img/logo/odb.jpeg') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/logo/odb.jpeg') }}')">
+                                        <img src="{{ URL::to('public/assets/admin/img/logo/selfie.jpeg') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/avatars/1.png') }}')">
                                     </td>
                                     <td>John</td>
                                     <td>20/12/2024 10:15 AM</td>
@@ -85,8 +74,6 @@
                                     <th>Sl</th>
                                     <th>Actions</th>
                                     <th>Selfie</th>
-                                    <th>Qr Code</th>
-                                    <th>OBD Image</th>
                                     <th>Name</th>
                                     <th>Check Out Date Time</th>
                                 </tr>
@@ -100,26 +87,16 @@
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                           </button>
                                           <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="{{URL::to('admin/mapView/1')}}" target="_blank"><i class="bx bx-edit-alt me-1"></i> Map</a>
                                             {{-- <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a> --}}
                                           </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <img src="{{ URL::to('public/assets/admin/img/logo/selfie.jpeg') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/logo/selfie.jpeg') }}')">
-                                    </td>
-                                    <td>
-                                        
-                                        <small>Vehicle Number: WB W3 1234</small><br>
-                                        <small>Owner name : Jhon</small><br>
-                                        <small>Vehicle model : Test</small><br>
-                                        <small>Contact number : 123456789 </small>
-                                    </td>
-                                    <td>
-                                        <img src="{{ URL::to('public/assets/admin/img/logo/odb.jpeg') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/logo/odb.jpeg') }}')">
+                                        <img src="{{ URL::to('public/assets/admin/img/logo/selfie.jpeg') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/avatars/1.png') }}')">
                                     </td>
                                     <td>John</td>
-                                    <td>20/12/2024 07:15 PM</td>
+                                    <td>20/12/2024 10:15 AM</td>
                                 </tr>
                             </tbody>
                         </table>

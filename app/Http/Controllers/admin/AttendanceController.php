@@ -25,4 +25,10 @@ class AttendanceController extends Controller
         
         return view('admin.pages.attendance.salesEmployee',$data);
     }
+
+    public function mapView(){
+        $data['title']='Map';
+        
+        return view('admin.pages.map.mapView',$data);
+    }
 }

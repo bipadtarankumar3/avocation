@@ -173,7 +173,7 @@
         </ul>
       </li>
 
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-cube-alt"></i>
           <div data-i18n="Misc">Manage Consignments</div>
@@ -195,6 +195,20 @@
             </a>
           </li>
         </ul>
+      </li> --}}
+
+      <li class="menu-item">
+        <a href="javascript:void(0)" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+          <div data-i18n="Delivery Management ">Delivery Management </div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="{{URL::to('admin/delivery/delivery')}}" class="menu-link">
+              <div data-i18n="Delivery">Delivery</div>
+            </a>
+          </li>
+          </ul>
       </li>
 
       <!-- User interface -->
@@ -209,12 +223,11 @@
               <div data-i18n="Visit Reports">Visit Reports</div>
             </a>
           </li>
-         
-          
-         
-          </li>
-        </ul>
+          </ul>
       </li>
+
+
+      
 
     </ul>
   </aside>

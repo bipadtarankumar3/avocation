@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\ConsignmentController;
 use App\Http\Controllers\admin\DriverController;
 use App\Http\Controllers\admin\SalesController;
 use App\Http\Controllers\admin\VisitController;
+use App\Http\Controllers\admin\DeliveryManagementController;
 
 Route::get('login', [AdminAuthController::class, 'login'])->name('login');
 Route::get('back-to-admin', [AdminAuthController::class, 'backToAdmin']);
@@ -22,6 +23,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
     Route::put('/admin/profile/update', [AdminAuthController::class, 'updateProfile'])->name('profile.update');
     Route::put('/admin/password/update', [AdminAuthController::class, 'updatePassword'])->name('password.update');
     Route::get('logout', [AdminAuthController::class, 'logout']);
+    
+    Route::get('mapView/1', [AttendanceController::class, 'mapView']);
     
     Route::group(['prefix' => 'company', 'as' => 'company.'], function () {
         Route::get('/', [CompanyController::class, 'companyList']);
@@ -62,6 +65,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
 
     Route::group(['prefix' => 'visit', 'as' => 'visit.'], function () {
         Route::get('visit-reports', [VisitController::class, 'visitReports']);
+    });
+
+    Route::group(['prefix' => 'delivery', 'as' => 'delivery.'], function () {
+        Route::get('delivery', [DeliveryManagementController::class, 'deliveryList']);
+        Route::get('deliveryDetails/{id}', [DeliveryManagementController::class, 'deliveryDetails']);
+        Route::get('returnDetails/{id}', [DeliveryManagementController::class, 'returnDetails']);
     });
 
 
