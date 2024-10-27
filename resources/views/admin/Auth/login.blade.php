@@ -62,7 +62,7 @@
     <script src="{{URL::to('public/assets/admin/js/config.js')}}"></script>
   </head>
 
-  <body style="background: #7e5caa;">
+  <body style="background: #891f1a;">
     <!-- Content -->
 
     <div class="container-xxl">
@@ -73,7 +73,7 @@
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <img src="{{ URL::to('public/assets/admin/img/logo/logo.jpeg') }}"  alt="" width="150px" class="img-thumbnail" >
+                <img src="{{ URL::to('public/assets/admin/img/logo/logo.jpg') }}"  alt="" width="150px" class="img-thumbnail" >
               </div>
               <!-- /Logo -->
               <h4 class="mb-2">Welcome to Navata! 👋</h4>
@@ -114,7 +114,7 @@
                 </div>
                 
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                  <button class="btn btn-primary d-grid w-100" style="    background: #891f1a;" type="submit">Sign in</button>
                 </div>
               </form>
 
