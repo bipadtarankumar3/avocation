@@ -32,24 +32,46 @@
                             <th>Actions</th>
                             <th>Name</th>
                             <th>Address</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
                  
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <a href="#" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="#" onclick="deleteConfirmation(event)"><i class="fa-solid fa-trash"></i></a>
-                                            
-                        </td>
-                        <td>Test Private Limited</td>
-                        <td>Kolkata</td>
-                    </tr>
+                        @foreach ($company as $key=> $user)
+              
+                        <tr>
+                          <td scope="row">{{$key+1}}</td>
+                            <td>
+                                <a href="{{ url('admin/company/edit/' . $user->id) }}"><i class="fa-solid fa-pen"></i></a>
+                                <a href="{{URL::to('admin/company/delete/'.$user->id)}}"  onclick="deleteConfirmationGet(event)"><i class="fa-solid fa-trash"></i></a>
+                            
+                            </td>
+                          <td>{{$user->company_name}}</td>
+                          <td>{{ $user->company_address ?? 'N/A' }}</td>
+                          <td>{{ $user->company_status}}</td>
+              
+                          
+                          
+                        </tr>
+                        @endforeach
 
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+@endsection
+
+
+
+
+@section('js')
+<script>
+    function deleteConfirmation(event, productId) {
+        event.preventDefault();
+        if (confirm('Are you sure you want to delete this product?')) {
+            window.location.href = '{{ url('admin/product/stockDelete') }}/' + productId;
+        }
+    }
+</script>
 @endsection

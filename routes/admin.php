@@ -29,10 +29,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
     Route::group(['prefix' => 'company', 'as' => 'company.'], function () {
         Route::get('/', [CompanyController::class, 'companyList']);
         Route::get('add', [CompanyController::class, 'adCompany']);
+        Route::get('edit/{id}', [CompanyController::class, 'edit']);
+        Route::post('save_company/{id?}', [CompanyController::class, 'save_company']);
+        Route::get('delete/{id}', [CompanyController::class, 'destroyCompany']);
     });
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::get('list', [UserManagementController::class, 'userList']);
+
+        Route::get('add', [UserManagementController::class, 'userAdd']);
+        Route::get('edit/{id}', [UserManagementController::class, 'edit'])->name('admin.user.edit');
+        Route::post('save_user/{id?}', [UserManagementController::class, 'save_user'])->name('admin.user.save');
+        Route::get('delete/{id}', [UserManagementController::class, 'destroyUser']);
 
         Route::get('approved_user/{id}', [UserManagementController::class, 'approved_user']);
         Route::get('new-office-employee', [UserManagementController::class, 'newOfficeEmployee']);
@@ -47,6 +55,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
     Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
         Route::get('/', [ClientController::class, 'clientList']);
         Route::get('add', [ClientController::class, 'adClient']);
+        Route::get('edit/{id}', [ClientController::class, 'edit']);
+        Route::post('save_client/{id?}', [ClientController::class, 'save_client']);
+        Route::get('delete/{id}', [ClientController::class, 'destroyClient']);
     });
 
     Route::group(['prefix' => 'attendance', 'as' => 'attendance.'], function () {
