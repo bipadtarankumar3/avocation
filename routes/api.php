@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\CompanyController;
+
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,7 +22,8 @@ use App\Http\Controllers\api\AuthController;
 // });
 
 
-Route::post('/company', [AuthController::class, 'company']);
+Route::get('/master/company', [CompanyController::class, 'companyList']);
+Route::post('/employee_register', [AuthController::class, 'employee_register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
