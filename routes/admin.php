@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\DriverController;
 use App\Http\Controllers\admin\SalesController;
 use App\Http\Controllers\admin\VisitController;
 use App\Http\Controllers\admin\DeliveryManagementController;
+use App\Http\Controllers\admin\LogisticController;
 
 Route::get('login', [AdminAuthController::class, 'login'])->name('login');
 Route::get('back-to-admin', [AdminAuthController::class, 'backToAdmin']);
@@ -32,6 +33,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
         Route::get('edit/{id}', [CompanyController::class, 'edit']);
         Route::post('save_company/{id?}', [CompanyController::class, 'save_company']);
         Route::get('delete/{id}', [CompanyController::class, 'destroyCompany']);
+    });
+    
+    Route::group(['prefix' => 'logistic', 'as' => 'logistic.'], function () {
+        Route::get('/', [LogisticController::class, 'logisticList']);
+        Route::get('add', [LogisticController::class, 'adlogistic']);
+        Route::get('edit/{id}', [LogisticController::class, 'edit']);
+        Route::post('save_logistic/{id?}', [LogisticController::class, 'save_logistic']);
+        Route::get('delete/{id}', [LogisticController::class, 'destroylogistic']);
     });
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {

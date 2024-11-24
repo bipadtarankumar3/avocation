@@ -82,6 +82,12 @@
           <div data-i18n="Basic">Company</div>
         </a>
       </li>
+      <li class="menu-item">
+        <a href="{{URL::to('admin/logistic')}}" class="menu-link">
+          <i class="menu-icon tf-icons bx bx-collection"></i>
+          <div data-i18n="Basic">Manage Logistic</div>
+        </a>
+      </li>
 
       <li class="menu-item " style="">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
