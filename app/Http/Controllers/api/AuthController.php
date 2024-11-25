@@ -43,12 +43,13 @@ class AuthController extends Controller
     
             // Create the user
             $user = User::create([
-                'company_id' => $validatedData['company_id'],
-                'user_type' => $validatedData['user_type'],
-                'email' => $validatedData['email'],
-                'name' => $validatedData['name'],
-                'password' => bcrypt($validatedData['password']),
-                'phone' => $validatedData['phone'],
+                'code' => $request->emp_code,
+                'company_id' => $request->company_id,
+                'user_type' => $request->user_type,
+                'email' => $request->email,
+                'name' => $request->name,
+                'password' => bcrypt($request->password),
+                'phone' => $request->phone,
                 'selfie' => $uploadedFiles['selfie'] ?? null,
                 'status' => 'pending',
             ]);
@@ -56,17 +57,17 @@ class AuthController extends Controller
             // Create the employee
             Employee::create([
                 'user_id' => $user->id,
-                'emp_company_id' => $validatedData['company_id'],
-                'emp_type' => $validatedData['user_type'],
-                'emp_code' => $validatedData['emp_code'] ?? null,
-                'emp_name' => $validatedData['name'],
-                'emp_location' => $validatedData['emp_location'] ?? null,
-                'emp_branch' => $validatedData['emp_branch'] ?? null,
-                'emp_function' => $validatedData['emp_function'] ?? null,
-                'emp_phone' => $validatedData['phone'],
-                'emp_email' => $validatedData['email'],
-                'emp_fm_vehicle_no' => $validatedData['emp_fm_vehicle_no'] ?? null,
-                'emp_dl_date' => $validatedData['emp_dl_date'] ?? null,
+                'emp_company_id' => $request->company_id?? null,
+                'emp_type' => $request->user_type?? null,
+                'emp_code' => $request->emp_code ?? null,
+                'emp_name' => $request->name?? null,
+                'emp_location' => $request->emp_location ?? null,
+                'emp_branch' => $request->emp_branch ?? null,
+                'emp_function' => $request->emp_function ?? null,
+                'emp_phone' => $request->phone?? null,
+                'emp_email' => $request->email?? null,
+                'emp_fm_vehicle_no' => $request->emp_fm_vehicle_no ?? null,
+                'emp_dl_date' => $request->emp_dl_date ?? null,
                 'emp_selfie' => $uploadedFiles['selfie'] ?? null,
                 'emp_aadhar' => $uploadedFiles['aadhar'] ?? null,
                 'emp_pan' => $uploadedFiles['pan'] ?? null,
@@ -107,7 +108,7 @@ private function uploadFiles(Request $request, array $fields)
             $file = $request->file($field);
             $filename = uniqid() . '_' . $file->getClientOriginalName(); // Use PHP's uniqid
             $file->move(public_path($path), $filename);
-            $uploadedFiles[$field] = "/$path/$filename";
+            $uploadedFiles[$field] = url("public/"."$path/$filename");
         }
     }
     return $uploadedFiles;

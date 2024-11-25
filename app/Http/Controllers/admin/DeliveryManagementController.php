@@ -12,6 +12,16 @@ class DeliveryManagementController extends Controller
         
         return view('admin.pages.delivery.deliveryList',$data);
     }
+    public function lmList(){
+        $data['title']='LM List';
+        
+        return view('admin.pages.delivery.lmList',$data);
+    }
+    public function fmList(){
+        $data['title']='FM List';
+        
+        return view('admin.pages.delivery.fmList',$data);
+    }
     public function deliveryDetails(){
         $data['title']='Delivery Details';
         

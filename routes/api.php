@@ -23,7 +23,9 @@ use App\Http\Controllers\api\CompanyController;
 
 
 Route::get('/master/company', [CompanyController::class, 'companyList']);
-Route::post('/employee_register', [AuthController::class, 'employee_register']);
+Route::post('/office_employee_register', [AuthController::class, 'employee_register']);
+Route::post('/field_employee_register', [AuthController::class, 'employee_register']);
+Route::post('/sales_register', [AuthController::class, 'employee_register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {

@@ -210,11 +210,16 @@
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="{{URL::to('admin/delivery/delivery')}}" class="menu-link">
-              <div data-i18n="Delivery">Delivery</div>
+            <a href="{{URL::to('admin/delivery/lm')}}" class="menu-link">
+              <div data-i18n="Delivery">LM</div>
             </a>
           </li>
-          </ul>
+          <li class="menu-item">
+            <a href="{{URL::to('admin/delivery/fm')}}" class="menu-link">
+              <div data-i18n="Delivery">FM</div>
+            </a>
+          </li>
+        </ul>
       </li>
 
       <!-- User interface -->
@@ -231,7 +236,13 @@
           </li>
           </ul>
       </li>
-
+           
+      <li class="menu-item">
+        <a href="{{URL::to('admin/live-tracking')}}" class="menu-link">
+          <i class="menu-icon tf-icons bx bx-layout"></i>
+          <div data-i18n="Basic">Live Tracking</div>
+        </a>
+      </li>
 
       
 

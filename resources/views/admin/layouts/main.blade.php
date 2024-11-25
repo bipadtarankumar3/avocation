@@ -190,6 +190,13 @@
             ]
 
         });
+        $('#zero_config2').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+
+            ]
+
+        });
         $('#report').DataTable({
             dom: 'Bfrtip',
             buttons: [

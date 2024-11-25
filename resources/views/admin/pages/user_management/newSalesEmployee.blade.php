@@ -9,7 +9,7 @@
         <div class="mb-2">
             <div class="row">
                 <div class="col-md-10">
-                    <h5 class="mb-0">{{$title}}</h5>
+                    <h5 class="mb-0">{{ $title }}</h5>
                 </div>
                 <div class="col-md-2">
                     {{-- Add New Button (If needed) --}}
@@ -27,7 +27,7 @@
                             <th>User Type</th>
                             <th>Selfie</th>
                             <th>Name</th>
-                            <th> Code</th>
+                            <th>Code</th>
                             <th>Location</th>
                             <th>Phone</th>
                             <th>Email</th>
@@ -36,33 +36,55 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        <tr>
-                            <td>1</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
-                                      <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu" style="">
-                                      <a class="dropdown-item" href="{{URL::to('admin/user/approved_user/1')}}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                      <a href="javascript:void(0);" class="dropdown-item" onclick="viewDetails('General Employee', 'John', 'Em-001', 'Kolkata', 'New Town', 'Driver', '0123456789', 'john@gmail.com', 'Wb 20E 2356', 'Pending', '{{ URL::to('public/assets/admin/img/logo/sales.jpeg') }}', '{{ URL::to('public/assets/admin/img/logo/aadhar.png') }}', '{{ URL::to('public/assets/admin/img/logo/pan.jpeg') }}')">View</a>
+                        @foreach ($users as $index => $user)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="{{ url('admin/user/approved_user/' . $user->id) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <a href="javascript:void(0);" class="dropdown-item" 
+                                               onclick="viewDetails(
+                                                    '{{ $user->user_type }}', 
+                                                    '{{ $user->name }}', 
+                                                    '{{ $user->employee_code }}', 
+                                                    '{{ $user->employee->emp_location }}', 
+                                                    '{{ $user->employee->emp_branch }}', 
+                                                    '{{ $user->employee->emp_function }}', 
+                                                    '{{ $user->phone }}', 
+                                                    '{{ $user->email }}', 
+                                                    '{{ $user->employee->emp_fm_vehicle_no }}', 
+                                                    '{{ $user->status }}', 
+                                                    '{{ asset($user->employee->emp_selfie) }}', 
+                                                    '{{ asset($user->employee->emp_aadhar) }}', 
+                                                    '{{ asset($user->employee->emp_pan) }}',
+                                                    '{{ asset($user->employee->emp_photo) }}',
+                                                )">
+                                                View
+                                            </a>
+                                        </div>
                                     </div>
-                                  </div>
-                                
-                            </td>
-                            <td>General Employee</td>
-                            <td>
-                                <img src="{{ URL::to('public/assets/admin/img/logo/sales.jpeg') }}" alt="Selfie" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/logo/sales.jpeg') }}')">
-                            </td>
-                           
-                            <td>John</td>
-                            <td>Em-001</td>
-                            <td>Kolkata</td>
-                            <td>0123456789</td>
-                            <td>john@gmail.com</td>
-                            <td>Wb 20E 2356</td>
-                            <td>Pending</td>
-                        </tr>
+                                </td>
+                                <td>{{ $user->user_type }}</td>
+                                <td>
+                                    <img src="{{ asset($user->selfie) }}" alt="Selfie" width="100px" class="img-thumbnail" 
+                                         style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" 
+                                         onclick="showImage('{{ asset($user->employee->emp_selfie) }}')">
+                                </td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->employee_code }}</td>
+                                <td>{{ $user->employee->emp_location }}</td>
+                                <td>{{ $user->phone }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->employee->emp_fm_vehicle_no }}</td>
+                                <td>{{ $user->status }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -83,8 +105,9 @@
                         <li class="list-group-item"><strong>Name:</strong> <span id="name"></span></li>
                         <li class="list-group-item"><strong>Employee Code:</strong> <span id="employeeCode"></span></li>
                         <li class="list-group-item"><strong>DL Expiry Date:</strong> <span id="">20/10/2024</span></li>
-                        <li class="list-group-item"><strong>DL Image:</strong> <span id=""><img src="{{ URL::to('public/assets/admin/img/logo/dl.jpg') }}" alt="Selfie" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/logo/dl.jpg') }}')"></span></li>
-                        
+                        <li class="list-group-item"><strong>DL Image:</strong> 
+                            <img src="{{ asset('public/assets/admin/img/logo/dl.jpg') }}" id="dlImage" alt="DL" width="100px" class="img-thumbnail">
+                        </li>
                         <li class="list-group-item"><strong>Location:</strong> <span id="location"></span></li>
                         <li class="list-group-item"><strong>Branch:</strong> <span id="branch"></span></li>
                         <li class="list-group-item"><strong>Function:</strong> <span id="function"></span></li>
@@ -132,7 +155,7 @@
             document.getElementById('modalImage').src = src;
         }
 
-        function viewDetails(userType, name, employeeCode, location, branch, func, phone, email, vehicleNumber, status, selfie, aadhar, pan) {
+        function viewDetails(userType, name, employeeCode, location, branch, func, phone, email, vehicleNumber, status, selfie, aadhar, pan,dlImage) {
             document.getElementById('userType').textContent = userType;
             document.getElementById('name').textContent = name;
             document.getElementById('employeeCode').textContent = employeeCode;
@@ -148,6 +171,7 @@
             document.getElementById('selfie').src = selfie;
             document.getElementById('aadhar').src = aadhar;
             document.getElementById('pan').src = pan;
+            document.getElementById('dlImage').src = dlImage;
 
             // Show the modal
             var detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'), {});

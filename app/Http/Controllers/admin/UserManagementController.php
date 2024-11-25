@@ -80,25 +80,25 @@ class UserManagementController extends Controller
 
     public function newOfficeEmployee(){
         $data['title']='new Office Employee';
-        $data['users']=User::where('user_type','user')->get();
+        $data['users']=User::where('user_type','office_employee')->get();
         return view('admin.pages.user_management.newOfficeEmployee',$data);
     }
 
     public function newFieldDriver(){
         $data['title']='new Field Driver';
-        $data['users']=User::where('user_type','user')->get();
+        $data['users']=User::with('employee')->where('user_type','field_employee')->get();
         return view('admin.pages.user_management.newFieldDriver',$data);
     }
 
     public function newSalesEmployee(){
         $data['title']='new Sales Employee';
-        $data['users']=User::where('user_type','user')->get();
+        $data['users']=User::with('employee')->where('user_type','sales_employee')->get();
         return view('admin.pages.user_management.newSalesEmployee',$data);
     }
 
     public function approvedOfficeEmployee(){
         $data['title']='approved Office Employee';
-        $data['users']=User::where('user_type','user')->get();
+        $data['users']=User::with('employee')->where('user_type','user')->get();
         return view('admin.pages.user_management.approvedOfficeEmployee',$data);
     }
 
