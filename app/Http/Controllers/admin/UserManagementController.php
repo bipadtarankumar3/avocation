@@ -79,13 +79,13 @@ class UserManagementController extends Controller
     }
 
     public function newOfficeEmployee(){
-        $data['title']='new Office Employee';
+        $data['title']='New Office Employee';
         $data['users']=User::where('user_type','office_employee')->get();
         return view('admin.pages.user_management.newOfficeEmployee',$data);
     }
 
     public function newFieldDriver(){
-        $data['title']='new Field Driver';
+        $data['title']='New Field Emplyee';
         $data['users']=User::with('employee')->where('user_type','field_employee')->get();
         return view('admin.pages.user_management.newFieldDriver',$data);
     }
@@ -103,7 +103,7 @@ class UserManagementController extends Controller
     }
 
     public function approvedFieldDriver(){
-        $data['title']='approved Field Driver';
+        $data['title']='approved Field Emplyeer';
         $data['users']=User::where('user_type','user')->get();
         return view('admin.pages.user_management.approvedFieldDriver',$data);
     }

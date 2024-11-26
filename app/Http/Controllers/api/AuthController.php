@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\CheckInCheckout;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -137,4 +139,114 @@ private function uploadFiles(Request $request, array $fields)
             'token' => $token,
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return response()->json(['message' => 'Successfully logged out']);
+    }   
+
+
+  
+    public function check_in_checkouts(Request $request)
+    {
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
+                'phone_no' => 'required|string|regex:/^[0-9]{10}$/',
+                'selfie' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+                'lat' => 'nullable|regex:/^-?\d{1,2}\.\d{1,6}$/',
+                'long' => 'nullable|regex:/^-?\d{1,3}\.\d{1,6}$/',
+                'place' => 'nullable|string|max:255',
+                'in_out_status' => 'nullable|string|in:in,out',
+            ]);
+    
+            $url = null;
+    
+            // Handle selfie upload if provided
+            if ($request->hasFile('selfie')) {
+                $screenshot = $request->file('selfie');
+                $milisecond = round(microtime(true) * 1000);
+                $name = $screenshot->getClientOriginalName();
+                $actual_name = str_replace(" ", "_", $name);
+                $uploadName = $milisecond . "_" . $actual_name;
+                $screenshot->move(public_path('upload/check_in_checkout'), $uploadName);
+                $url = url('public/upload/check_in_checkout/' . $uploadName);
+            }
+    
+            // Generate a 6-digit OTP if not provided in the request
+            $otp = $validatedData['otp'] ?? random_int(100000, 999999);
+    
+            // Insert the data into the database
+            $checkInCheckout = new CheckInCheckout();
+            $checkInCheckout->ckn_user_id = $validatedData['user_id'];
+            $checkInCheckout->ckn_phone_no = $validatedData['phone_no'];
+            $checkInCheckout->ckn_selfie = $url;
+            $checkInCheckout->ckn_otp = $otp;
+            $checkInCheckout->ckn_lat = $validatedData['lat'] ?? null;
+            $checkInCheckout->ckn_long = $validatedData['long'] ?? null;
+            $checkInCheckout->ckn_place = $validatedData['place'] ?? null;
+            $checkInCheckout->ckn_in_out_status = $validatedData['in_out_status'] ?? null;
+            $checkInCheckout->save();
+    
+            // Return a success response
+            return response()->json([
+                'message' => 'Check-in data saved successfully.',
+                'data' => $checkInCheckout,
+            ], 201);
+    
+        } catch (ValidationException $e) {
+            // Return a custom JSON response for validation errors
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+    }
+    
+
+public function verify_otp(Request $request)
+{
+    try {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer|exists:check_in_checkouts,ckn_user_id',
+            'otp' => 'required|integer|digits:6',
+        ]);
+
+        // Check if the OTP exists and matches the user
+        $checkInCheckout = CheckInCheckout::where('ckn_user_id', $validatedData['user_id'])
+            ->where('ckn_otp', $validatedData['otp'])
+            ->first();
+
+        if (!$checkInCheckout) {
+            // OTP does not match
+            return response()->json([
+                'message' => 'Invalid OTP.',
+            ], 400);
+        }
+
+        // Mark the OTP as verified (optional, depending on your use case)
+        $checkInCheckout->ckn_status = 'verified';
+        $checkInCheckout->save();
+
+        // Return a success response
+        return response()->json([
+            'message' => 'OTP verified successfully.',
+            'data' => $checkInCheckout,
+        ], 200);
+
+    } catch (ValidationException $e) {
+        // Return a custom JSON response for validation errors
+        return response()->json([
+            'message' => 'Validation failed.',
+            'errors' => $e->errors(),
+        ], 422);
+    }
+}
+
+
+
+
 }

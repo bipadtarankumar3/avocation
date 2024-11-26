@@ -98,7 +98,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="consignmentModalLabel">Consignment Details</h5>
+                <h5 class="modal-title" id="consignmentModalLabel">Vistor  Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -114,7 +114,7 @@
                     <li class="list-group-item"><strong>Condition:</strong> Yes</li>
                     <li class="list-group-item"><strong>Handling Cost Amount:</strong> 123</li>
                     <li class="list-group-item">
-                        <img src="{{ asset('public/assets/admin/img/logo/default.jpg') }}" 
+                        <img src="{{ URL::to('public/assets/admin/img/logo/thumbnail2.jpg') }}" 
                              alt="Selfie" width="100px" class="img-thumbnail" >
                     </li>
                     <li class="list-group-item"><strong>Condition:</strong> Good</li>

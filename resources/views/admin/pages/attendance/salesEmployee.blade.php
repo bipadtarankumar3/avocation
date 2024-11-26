@@ -3,13 +3,12 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h6 class="py-3 mb-4">
-            <span class="text-muted fw-light">Admin/</span> 
-            {{ Request::segment(2) . '/' . Request::segment(3) }}
+            <span class="text-muted fw-light">Admin/</span> {{ $title }}
         </h6>
         <div class="mb-2">
             <div class="row">
                 <div class="col-md-10">
-                    <h5 class="mb-0">{{$title}}</h5>
+                    <h5 class="mb-0">{{ $title }}</h5>
                 </div>
                 <div class="col-md-2">
                     {{-- Add New Button (If needed) --}}
@@ -18,92 +17,62 @@
         </div>
 
         <div class="card p-4">
-
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Check In</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Check Out</button>
-                </li>
-                
-              </ul>
-              <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <div class="table-responsive text-nowrap">
-                        <table class="table" id="zero_config">
-                            <thead>
-                                <tr>
-                                    <th>Sl</th>
-                                    <th>Actions</th>
-                                    <th>Selfie</th>
-                                    <th>Name</th>
-                                    <th>Check In Date Time</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <div class="dropdown">
-                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                          </button>
-                                          <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="{{URL::to('admin/mapView/1')}}" target="_blank"><i class="bx bx-edit-alt me-1"></i> Map</a>
-                                            {{-- <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a> --}}
-                                          </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ URL::to('public/assets/admin/img/avatars/1.png') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/avatars/1.png') }}')">
-                                    </td>
-                                    <td>John</td>
-                                    <td>20/12/2024 10:15 AM</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="table-responsive text-nowrap">
-                        <table class="table" id="zero_config">
-                            <thead>
-                                <tr>
-                                    <th>Sl</th>
-                                    <th>Actions</th>
-                                    <th>Selfie</th>
-                                    <th>Name</th>
-                                    <th>Check Out Date Time</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-border-bottom-0">
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <div class="dropdown">
-                                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                          </button>
-                                          <div class="dropdown-menu" style="">
-                                            <a class="dropdown-item" href="{{URL::to('admin/mapView/1')}}" target="_blank"><i class="bx bx-edit-alt me-1"></i> Map</a>
-                                            {{-- <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a> --}}
-                                          </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <img src="{{ URL::to('public/assets/admin/img/avatars/1.png') }}" alt="" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ URL::to('public/assets/admin/img/avatars/1.png') }}')">
-                                    </td>
-                                    <td>John</td>
-                                    <td>20/12/2024 07:15 PM</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-              </div>
-
-           
+            <table class="table" id="zero_config">
+                <thead>
+                    <tr>
+                        <th>Sl</th>
+                        <th>Actions</th>
+                        <th>Selfie</th>
+                        <th>Name</th>
+                        <th>Phone no</th>
+                        <th>Check In Date Time</th>
+                        <th>Place</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @forelse ($employees as $index => $employee)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="{{ URL::to('admin/mapView/' . $employee->user_id) }}" target="_blank">
+                                            <i class="bx bx-edit-alt me-1"></i> Map
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if ($employee->ckn_selfie)
+                                    <img src="{{ $employee->ckn_selfie }}" alt="Selfie" width="100px" class="img-thumbnail" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="showImage('{{ $employee->ckn_selfie }}')">
+                                @else
+                                    <span>No Image</span>
+                                @endif
+                            </td>
+                            <td>{{ $employee->name }}</td>
+                            <td>{{ $employee->phone }}</td>
+                            <td>{{ \Carbon\Carbon::parse($employee->ckn_date)->format('d/m/Y h:i A') }}</td>
+                            <td>{{ $employee->ckn_place }}</td>
+                            <td>{{ ucfirst($employee->ckn_in_out_status) }}</td>
+                        </tr>
+                    @empty
+                    <tr>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 

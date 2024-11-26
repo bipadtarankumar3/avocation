@@ -108,7 +108,7 @@
               </li>
               <li class="menu-item">
                 <a href="{{URL::to('admin/user/new-field-driver')}}" class="menu-link">
-                  <div class="text-truncate" data-i18n="Add Product">Field/Driver</div>
+                  <div class="text-truncate" data-i18n="Add Product">Field Emplyee</div>
                 </a>
               </li>
               <li class="menu-item">
@@ -130,7 +130,7 @@
               </li>
               <li class="menu-item">
                 <a href="{{URL::to('admin/user/approved-field-driver')}}" class="menu-link">
-                  <div class="text-truncate" data-i18n="Add Product">Field/Driver</div>
+                  <div class="text-truncate" data-i18n="Add Product">Field Emplyee</div>
                 </a>
               </li>
               <li class="menu-item">
@@ -167,7 +167,7 @@
           </li>
           <li class="menu-item">
             <a href="{{URL::to('admin/attendance/field-driver')}}" class="menu-link">
-              <div data-i18n="Without navbar">Field/Driver</div>
+              <div data-i18n="Without navbar">Field Emplyee</div>
             </a>
           </li>
           <li class="menu-item">

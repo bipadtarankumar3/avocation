@@ -200,7 +200,7 @@
                     <li class="list-group-item"><strong>Condition:</strong> Yes</li>
                     <li class="list-group-item"><strong>Handling Cost Amount:</strong> 123</li>
                     <li class="list-group-item">
-                        <img src="{{ asset('public/assets/admin/img/logo/default.jpg') }}" 
+                        <img src="{{ URL::to('public/assets/admin/img/logo/thumbnail2.jpg') }}" 
                              alt="Picture Upload" width="100px" class="img-thumbnail" >
                     </li>
                     <li class="list-group-item"><strong>Condition:</strong> Good</li>

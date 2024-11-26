@@ -26,7 +26,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
     Route::get('logout', [AdminAuthController::class, 'logout']);
     
     Route::get('mapView/1', [AttendanceController::class, 'mapView']);
-    Route::get('live-tracking', [AttendanceController::class, 'mapView']);
+    Route::get('live-tracking', [AttendanceController::class, 'liveTracking']);
     
     Route::group(['prefix' => 'company', 'as' => 'company.'], function () {
         Route::get('/', [CompanyController::class, 'companyList']);
