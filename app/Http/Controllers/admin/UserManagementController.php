@@ -114,5 +114,7 @@ class UserManagementController extends Controller
         return view('admin.pages.user_management.approvedSalesEmployee',$data);
     }
 
+
+
     
 }

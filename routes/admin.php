@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\SalesController;
 use App\Http\Controllers\admin\VisitController;
 use App\Http\Controllers\admin\DeliveryManagementController;
 use App\Http\Controllers\admin\LogisticController;
+use App\Http\Controllers\admin\EmployeeAllowanceController;
 
 Route::get('login', [AdminAuthController::class, 'login'])->name('login');
 Route::get('back-to-admin', [AdminAuthController::class, 'backToAdmin']);
@@ -86,6 +87,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
 
     Route::group(['prefix' => 'visit', 'as' => 'visit.'], function () {
         Route::get('visit-reports', [VisitController::class, 'visitReports']);
+    });
+
+    Route::group(['prefix' => 'employee-allowance', 'as' => 'employee-allowance.'], function () {
+        Route::get('/', [EmployeeAllowanceController::class, 'employeeAllowance']);
+        Route::get('add', [EmployeeAllowanceController::class, 'employeeAllowanceAdd']);
+        Route::get('edit/{id}', [EmployeeAllowanceController::class, 'edit']);
+        Route::post('save_employee_allowance/{id?}', [EmployeeAllowanceController::class, 'save_employee_allowance']);
+        Route::get('delete/{id}', [EmployeeAllowanceController::class, 'destroyEmployeeAllowance']);
     });
 
 
