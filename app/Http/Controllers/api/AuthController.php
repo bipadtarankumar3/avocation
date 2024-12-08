@@ -23,9 +23,7 @@ class AuthController extends Controller
             'company_id' => 'required',
             'user_type' => 'required',
             'email' => 'required|email',
-            'name' => 'required',
-            'password' => 'required|min:8',
-            'phone' => 'required|numeric',
+            'password' => 'required|min:8'
         ]);
     
         // Begin database transaction
@@ -49,9 +47,9 @@ class AuthController extends Controller
                 'company_id' => $request->company_id,
                 'user_type' => $request->user_type,
                 'email' => $request->email,
-                'name' => $request->name,
+                'name' => $request->name ?? null, 
                 'password' => bcrypt($request->password),
-                'phone' => $request->phone,
+                'phone' => $request->phone ?? null,
                 'selfie' => $uploadedFiles['selfie'] ?? null,
                 'status' => 'pending',
             ]);

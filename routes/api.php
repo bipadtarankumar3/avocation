@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CompanyController;
+use App\Http\Controllers\api\SalesController;
+use App\Http\Controllers\api\EmployeeController;
 
 
 /*
@@ -40,4 +42,8 @@ Route::middleware('auth:api')->group(function () {
     // Check-in checkouts route
     Route::post('/check_in_checkouts', [AuthController::class, 'check_in_checkouts']); // Adjusted method name to `checkin`
     Route::post('/verify_otp', [AuthController::class, 'verify_otp']); // Adjusted method name to `checkin`
+
+    Route::post('/sales_create', [SalesController::class, 'sales_create']);
+    Route::post('/consignment_create', [EmployeeController::class, 'consignment_create']);
+
 });
