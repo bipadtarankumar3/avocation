@@ -52,6 +52,7 @@ class SalesController extends Controller
             // Return a success response
             return response()->json([
                 'message' => 'Visitor data saved successfully.',
+                'status' => 1,
                 'data' => $visitorDetail,
             ], 201);
     
@@ -59,12 +60,14 @@ class SalesController extends Controller
             // Return a custom JSON response for validation errors
             return response()->json([
                 'message' => 'Validation failed.',
+                'status' => 0,
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             // Catch any general exception
             return response()->json([
                 'message' => 'An error occurred.',
+                'status' => 0,
                 'error' => $e->getMessage(),
             ], 500);
         }

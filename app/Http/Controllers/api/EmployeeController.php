@@ -103,6 +103,7 @@ class EmployeeController extends Controller
             return response()->json([
                 'message' => 'Consignment created successfully.',
                 'data' => $consignment,
+                'status' => 1,
             ], 201);
     
         } catch (ValidationException $e) {
@@ -110,12 +111,14 @@ class EmployeeController extends Controller
             return response()->json([
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
+                'status' => 0,
             ], 422);
         } catch (\Exception $e) {
             // Catch any general exception
             return response()->json([
                 'message' => 'An error occurred.',
                 'error' => $e->getMessage(),
+                'status' => 0,
             ], 500);
         }
 

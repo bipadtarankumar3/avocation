@@ -80,6 +80,7 @@ class AuthController extends Controller
     
             return response()->json([
                 'user' => $user,
+                'status' => 1,
                 'message' => 'Employee registered successfully!',
             ], 201);
         } catch (\Exception $e) {
@@ -88,6 +89,7 @@ class AuthController extends Controller
     
             return response()->json([
                 'error' => 'Failed to register employee.',
+                'status' => 0,
                 'details' => $e->getMessage(),
             ], 500);
         }
@@ -116,32 +118,41 @@ private function uploadFiles(Request $request, array $fields)
 
 
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-
-        $user = Auth::user();
-
-        // Generate Token
-        $token = $user->createToken('API Token')->accessToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-        ]);
+    if (!Auth::attempt($credentials)) {
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
+
+    $user = Auth::user()->toArray();
+
+    // Replace all null values with empty strings
+    $user = array_map(function ($value) {
+        return $value === null ? '' : $value;
+    }, $user);
+
+    // Generate Token
+    $token = Auth::user()->createToken('API Token')->accessToken;
+
+    return response()->json([
+        'user' => $user,
+        'token' => $token,
+    ]);
+}
+
 
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'message' => 'Successfully logged out',
+            'status' => 1
+        ]);
     }   
 
 
@@ -192,6 +203,7 @@ private function uploadFiles(Request $request, array $fields)
             return response()->json([
                 'message' => 'Check-in data saved successfully.',
                 'data' => $checkInCheckout,
+                'status' =>1,
             ], 201);
     
         } catch (ValidationException $e) {
@@ -199,6 +211,7 @@ private function uploadFiles(Request $request, array $fields)
             return response()->json([
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
+                'status' => 0,
             ], 422);
         }
     }

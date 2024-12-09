@@ -15,7 +15,7 @@ class CompanyController extends Controller
     
         // Return data as a JSON response
         return response()->json([
-            'status' => 'success',
+            'status' => '1',
             'data' => $companies
         ], 200); // You can adjust the HTTP status code as needed
     }
