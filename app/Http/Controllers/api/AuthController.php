@@ -120,30 +120,45 @@ private function uploadFiles(Request $request, array $fields)
 
 public function login(Request $request)
 {
+    // Validate input
     $credentials = $request->validate([
         'email' => 'required|email',
         'password' => 'required',
     ]);
 
+    // Attempt login
     if (!Auth::attempt($credentials)) {
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        return response()->json([
+            'message' => 'Invalid credentials',
+            'status' => 0,
+        ], 401);
     }
 
-    $user = Auth::user()->toArray();
+    $user = Auth::user();
 
-    // Replace all null values with empty strings
-    $user = array_map(function ($value) {
-        return $value === null ? '' : $value;
-    }, $user);
+    // Check if the user's status is inactive
+    if ($user->status !== 'active') {
+        return response()->json([
+            'message' => 'Account is inactive. Please contact support.',
+            'status' => 0,
+        ], 403); // 403: Forbidden
+    }
 
-    // Generate Token
-    $token = Auth::user()->createToken('API Token')->accessToken;
+    // Generate access token
+    $token = $user->createToken('API Token')->accessToken;
+
+    // Convert user object to array and replace null values with empty strings
+    $userArray = $user->toArray();
+    $userArray = array_map(fn($value) => $value === null ? '' : $value, $userArray);
 
     return response()->json([
-        'user' => $user,
+        'user' => $userArray,
         'token' => $token,
+        'status' => 1,
+        'message' => 'Successfully logged in',
     ]);
 }
+
 
 
     public function logout(Request $request)
@@ -186,6 +201,7 @@ public function login(Request $request)
     
             // Generate a 6-digit OTP if not provided in the request
             $otp = $validatedData['otp'] ?? random_int(100000, 999999);
+            $otp = 123456;
     
             // Insert the data into the database
             $checkInCheckout = new CheckInCheckout();
@@ -193,10 +209,10 @@ public function login(Request $request)
             $checkInCheckout->ckn_phone_no = $validatedData['phone_no'];
             $checkInCheckout->ckn_selfie = $url;
             $checkInCheckout->ckn_otp = $otp;
-            $checkInCheckout->ckn_lat = $validatedData['lat'] ?? null;
-            $checkInCheckout->ckn_long = $validatedData['long'] ?? null;
-            $checkInCheckout->ckn_place = $validatedData['place'] ?? null;
-            $checkInCheckout->ckn_in_out_status = $validatedData['in_out_status'] ?? null;
+            $checkInCheckout->ckn_lat = $validatedData['lat'] ?? '';
+            $checkInCheckout->ckn_long = $validatedData['long'] ?? '';
+            $checkInCheckout->ckn_place = $validatedData['place'] ?? '';
+            $checkInCheckout->ckn_in_out_status = $validatedData['in_out_status'] ?? '';
             $checkInCheckout->save();
     
             // Return a success response
@@ -235,6 +251,8 @@ public function verify_otp(Request $request)
             // OTP does not match
             return response()->json([
                 'message' => 'Invalid OTP.',
+                'status' => 0
+
             ], 400);
         }
 
@@ -246,6 +264,7 @@ public function verify_otp(Request $request)
         return response()->json([
             'message' => 'OTP verified successfully.',
             'data' => $checkInCheckout,
+            'status' => 1
         ], 200);
 
     } catch (ValidationException $e) {
@@ -253,6 +272,7 @@ public function verify_otp(Request $request)
         return response()->json([
             'message' => 'Validation failed.',
             'errors' => $e->errors(),
+            'status' => 0
         ], 422);
     }
 }

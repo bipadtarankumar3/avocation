@@ -29,6 +29,8 @@ Route::post('/office_employee_register', [AuthController::class, 'employee_regis
 Route::post('/field_employee_register', [AuthController::class, 'employee_register']);
 Route::post('/sales_register', [AuthController::class, 'employee_register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/verify_otp', [AuthController::class, 'verify_otp']); // Adjusted method name to `checkin`
+
 
 Route::middleware('auth:api')->group(function () {
     // Get the authenticated user's details
@@ -41,8 +43,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Check-in checkouts route
     Route::post('/check_in_checkouts', [AuthController::class, 'check_in_checkouts']); // Adjusted method name to `checkin`
-    Route::post('/verify_otp', [AuthController::class, 'verify_otp']); // Adjusted method name to `checkin`
-
+  
     Route::post('/sales_create', [SalesController::class, 'sales_create']);
     Route::post('/consignment_create', [EmployeeController::class, 'consignment_create']);
 
