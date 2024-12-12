@@ -34,12 +34,24 @@ class AuthController extends Controller
 
             // dd($request->all());die;
 
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                return response()->json([
+                    'data' => [],
+                    'status' => 1,
+                    'message' => 'The email id is already registered.',
+                ]);
+            }
+
             $uploadedFiles = $this->uploadFiles($request, [
                 'selfie' => 'upload/selfie',
                 'aadhar' => 'upload/aadhar',
                 'pan' => 'upload/pan',
                 'photo' => 'upload/photo',
             ]);
+
+            $otp = $validatedData['otp'] ?? random_int(100000, 999999);
+            //$otp = 123456;
     
             // Create the user
             $user = User::create([
@@ -50,6 +62,8 @@ class AuthController extends Controller
                 'name' => $request->name ?? null, 
                 'password' => bcrypt($request->password),
                 'phone' => $request->phone ?? null,
+                'otp' => $otp ?? null,
+                'otp_verified' => 'no',
                 'selfie' => $uploadedFiles['selfie'] ?? null,
                 'status' => 'pending',
             ]);
@@ -77,12 +91,30 @@ class AuthController extends Controller
     
             // Commit the transaction
             DB::commit();
-    
+
+            // Generate access token
+            // $token = $user->createToken('API Token')->accessToken;
+
+            // Convert user object to array and replace null values with empty strings
+            $userArray = array(
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'otp' => $user->otp
+            );
+
             return response()->json([
-                'user' => $user,
+                'data' => $userArray,
                 'status' => 1,
                 'message' => 'Employee registered successfully!',
-            ], 201);
+            ]);
+    
+            // return response()->json([
+            //     'user' => $user,
+            //     'status' => 1,
+            //     'message' => 'Employee registered successfully!',
+            // ], 201);
         } catch (\Exception $e) {
             // Rollback the transaction on failure
             DB::rollBack();
@@ -92,6 +124,63 @@ class AuthController extends Controller
                 'status' => 0,
                 'details' => $e->getMessage(),
             ], 500);
+        }
+    }
+
+
+    public function reg_verify_otp(Request $request)
+    {
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'user_id' => 'required|integer',
+                'otp' => 'required|integer|digits:6',
+            ]);
+
+            // Check if the OTP exists and matches the user
+            $user = User::where('id', $validatedData['user_id'])
+                ->where('otp', $validatedData['otp'])
+                ->where('otp_verified', 'no')
+                ->first();
+
+            if (!$user) {
+                // OTP does not match
+                return response()->json([
+                    'message' => 'Invalid OTP.',
+                    'status' => 0,
+                    'data' => [],
+
+                ], 400);
+            }
+
+            // Mark the OTP as verified (optional, depending on your use case)
+            $user->otp_verified = 'yes';
+            $user->save();
+
+
+            $userArray = array(
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'otp' => $user->otp
+            );
+
+
+            // Return a success response
+            return response()->json([
+                'message' => 'OTP verified successfully.',
+                'data' => $userArray,
+                'status' => 1
+            ], 200);
+
+        } catch (ValidationException $e) {
+            // Return a custom JSON response for validation errors
+            return response()->json([
+                'message' => 'Validation failed.',
+                'errors' => $e->errors(),
+                'status' => 0
+            ], 422);
         }
     }
     
@@ -137,6 +226,13 @@ public function login(Request $request)
     $user = Auth::user();
 
     // Check if the user's status is inactive
+    if ( $user->otp_verified !== 'yes') {
+        return response()->json([
+            'message' => 'OTP is not verified. Please verify your OTP.',
+            'status' => 0,
+        ], 403); // 403: Forbidden
+    }
+    // Check if the user's status is inactive
     if ($user->status !== 'active') {
         return response()->json([
             'message' => 'Account is inactive. Please contact support.',
@@ -160,6 +256,26 @@ public function login(Request $request)
 }
 
 
+
+    public function userDetails(Request $request)
+    {
+        $user = User::where('id', $request->user_id)
+                ->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found.',
+                'status' => 0,
+                'data' => [],
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'User details retrieved successfully.',
+            'data' => $user,
+            'status' => 1
+        ]);
+    }   
 
     public function logout(Request $request)
     {
@@ -185,6 +301,19 @@ public function login(Request $request)
                 'place' => 'nullable|string|max:255',
                 'in_out_status' => 'nullable|string|in:in,out',
             ]);
+
+            $user = User::where('id', $validatedData['user_id'])
+                ->where('phone', $validatedData['phone_no'])
+                ->first();
+
+                if (!$user) {
+                    return response()->json([
+                        'message' => 'Please use register mobile number.',
+                        'status' => 0,
+                        'data' => [],
+                    ], 403); 
+                }
+
     
             $url = null;
     
@@ -201,7 +330,7 @@ public function login(Request $request)
     
             // Generate a 6-digit OTP if not provided in the request
             $otp = $validatedData['otp'] ?? random_int(100000, 999999);
-            $otp = 123456;
+            // $otp = 123456;
     
             // Insert the data into the database
             $checkInCheckout = new CheckInCheckout();
@@ -212,6 +341,8 @@ public function login(Request $request)
             $checkInCheckout->ckn_lat = $validatedData['lat'] ?? '';
             $checkInCheckout->ckn_long = $validatedData['long'] ?? '';
             $checkInCheckout->ckn_place = $validatedData['place'] ?? '';
+            $checkInCheckout->ckn_time = $validatedData['time'] ?? '';
+            $checkInCheckout->ckn_date = $validatedData['date'] ?? '';
             $checkInCheckout->ckn_in_out_status = $validatedData['in_out_status'] ?? '';
             $checkInCheckout->save();
     

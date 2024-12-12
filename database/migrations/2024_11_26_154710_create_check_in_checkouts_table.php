@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('ckn_lat')->nullable();
             $table->string('ckn_long')->nullable();
             $table->string('ckn_place')->nullable();
+            $table->date('ckn_time')->nullable();
             $table->date('ckn_date')->nullable();
             $table->string('ckn_in_out_status')->nullable();
             $table->string('ckn_status')->default('pending')->nullable();
