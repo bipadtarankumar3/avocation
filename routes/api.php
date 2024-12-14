@@ -6,6 +6,7 @@ use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\CompanyController;
 use App\Http\Controllers\api\SalesController;
 use App\Http\Controllers\api\EmployeeController;
+use App\Http\Controllers\api\MasterController;
 
 
 /*
@@ -43,5 +44,6 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/sales_create', [SalesController::class, 'sales_create']);
     Route::post('/consignment_create', [EmployeeController::class, 'consignment_create']);
+    Route::post('/area', [MasterController::class, 'area']);
 
 });

@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\UserManagementController;
 use App\Http\Controllers\admin\ClientController;
 use App\Http\Controllers\admin\AttendanceController;
 use App\Http\Controllers\admin\CompanyController;
+use App\Http\Controllers\admin\MasterController;
 use App\Http\Controllers\admin\ConsignmentController;
 use App\Http\Controllers\admin\DriverController;
 use App\Http\Controllers\admin\SalesController;
@@ -36,6 +37,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
         Route::post('save_company/{id?}', [CompanyController::class, 'save_company']);
         Route::get('delete/{id}', [CompanyController::class, 'destroyCompany']);
     });
+
+    Route::group(['prefix' => 'area', 'as' => 'area.'], function () {
+        Route::get('/', [MasterController::class, 'areaList']);
+        Route::get('add', [MasterController::class, 'adArea']);
+        Route::get('edit/{id}', [MasterController::class, 'edit']);
+        Route::post('save_area/{id?}', [MasterController::class, 'save_area']);
+        Route::get('delete/{id}', [MasterController::class, 'destroyArea']);
+    });
     
     Route::group(['prefix' => 'logistic', 'as' => 'logistic.'], function () {
         Route::get('/', [LogisticController::class, 'logisticList']);
@@ -53,6 +62,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['App\Http\
         Route::post('save_user/{id?}', [UserManagementController::class, 'save_user'])->name('admin.user.save');
         Route::get('delete/{id}', [UserManagementController::class, 'destroyUser']);
 
+        Route::post('statusChange', [UserManagementController::class, 'statusChange']);
         Route::get('approved_user/{id}', [UserManagementController::class, 'approved_user']);
         Route::get('new-office-employee', [UserManagementController::class, 'newOfficeEmployee']);
         Route::get('new-field-driver', [UserManagementController::class, 'newFieldDriver']);

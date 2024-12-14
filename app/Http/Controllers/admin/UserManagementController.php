@@ -72,9 +72,16 @@ class UserManagementController extends Controller
     }
 
 
-    public function approved_user(){
+    public function statusChange(Request $request){
+        $user = User::findOrFail($request->id);
+        $user->status = $request->status;
+        $user->save();
+        return redirect()->back()->with('success','Status updated successfully');
+    }
+
+    public function approved_user($id){
         $data['title']='Approve User';
-        $data['users']=User::where('user_type','user')->get();
+        $data['user']=User::where('id',$id)->first();
         return view('admin.pages.user_management.approved_user',$data);
     }
 

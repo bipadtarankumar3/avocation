@@ -23,7 +23,7 @@ class AuthController extends Controller
             'company_id' => 'required',
             'user_type' => 'required',
             'email' => 'required|email',
-            'password' => 'required|min:8'
+            'password' => 'required'
         ]);
     
         // Begin database transaction
@@ -296,10 +296,10 @@ public function login(Request $request)
                 'user_id' => 'required|integer|exists:users,id',
                 'phone_no' => 'required|string|regex:/^[0-9]{10}$/',
                 'selfie' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-                'lat' => 'nullable|regex:/^-?\d{1,2}\.\d{1,6}$/',
-                'long' => 'nullable|regex:/^-?\d{1,3}\.\d{1,6}$/',
+                'lat' => 'nullable',
+                'long' => 'nullable',
                 'place' => 'nullable|string|max:255',
-                'in_out_status' => 'nullable|string|in:in,out',
+                'in_out_status' => 'nullable|string',
             ]);
 
             $user = User::where('id', $validatedData['user_id'])
@@ -341,16 +341,17 @@ public function login(Request $request)
             $checkInCheckout->ckn_lat = $validatedData['lat'] ?? '';
             $checkInCheckout->ckn_long = $validatedData['long'] ?? '';
             $checkInCheckout->ckn_place = $validatedData['place'] ?? '';
-            $checkInCheckout->ckn_time = $validatedData['time'] ?? '';
-            $checkInCheckout->ckn_date = $validatedData['date'] ?? '';
+            $checkInCheckout->ckn_time = $request->time ?? null;
+            $checkInCheckout->ckn_date = $request->date ?? null;
             $checkInCheckout->ckn_in_out_status = $validatedData['in_out_status'] ?? '';
             $checkInCheckout->save();
-    
+            
+
             // Return a success response
             return response()->json([
-                'message' => 'Check-in data saved successfully.',
-                'data' => $checkInCheckout,
-                'status' =>1,
+                'message' => 'Data saved successfully.',
+                'otp' => $otp,
+                'status' =>1
             ], 201);
     
         } catch (ValidationException $e) {

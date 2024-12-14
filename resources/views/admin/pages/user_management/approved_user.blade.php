@@ -6,8 +6,9 @@
             {{ Request::segment(2) . '/' . Request::segment(3) }}
 
         </h6>
-        <form action="{{ isset($coupon) ? URL::to('admin/coupon/add-action/' . $coupon->id) : URL::to('admin/coupon/add-action') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ URL::to('admin/user/statusChange') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="id" value="{{ isset($user) ? $user->id : '' }}">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -16,29 +17,30 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="coupon_code">User Id</label>
-                                        <input type="text" class="form-control" id="coupon_code" name="coupon_code" placeholder="User Id" value="{{ isset($coupon) ? $coupon->coupon_code : '' }}" required>
+                                        <label for="code">User Code</label>
+                                        <input type="text" class="form-control" id="code" name="code" placeholder="User Id" value="{{ isset($user) ? $user->code : '' }}" required>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="user_name">Password</label>
+                                        <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Password" value="{{ isset($user) ? $user->user_name : '' }}" required>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="coupon_name">Password</label>
-                                        <input type="text" class="form-control" id="coupon_name" name="coupon_name" placeholder="Password" value="{{ isset($coupon) ? $coupon->coupon_name : '' }}" required>
+                                        <label for="user_name">Confirm Password</label>
+                                        <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Confirm Password" value="{{ isset($user) ? $user->user_name : '' }}" required>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="coupon_name">Confirm Password</label>
-                                        <input type="text" class="form-control" id="coupon_name" name="coupon_name" placeholder="Confirm Password" value="{{ isset($coupon) ? $coupon->coupon_name : '' }}" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="coupon_name">Status</label>
-                                        <select name="" id="" class="form-control">
+                                        <label for="user_name">Status</label>
+                                        <select name="status" id="status" class="form-control">
                                             <option value="">Select Status</option>
-                                            <option value="">Approved</option>
-                                            <option value="">Reject</option>
+                                            <option value="pending" @if (isset($user) && $user->status == 'pending') selected @endif>Pending</option>
+                                            <option value="active" @if (isset($user) && $user->status == 'active') selected @endif>Active</option>
+                                            <option value="inactive" @if (isset($user) && $user->status == 'inactive') selected @endif>Inactive</option>
                                         </select>
                                        
                                     </div>
@@ -46,7 +48,7 @@
                             </div>
                             <div class="row my-2">
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($coupon) ? 'Update' : 'Submit' }}</button>
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">{{ isset($user) ? 'Update' : 'Submit' }}</button>
                                     <a href="{{URL::to('admin/user/new-office-employee')}}">
                                         <button type="button" class="btn btn-warning waves-effect waves-light">Back</button> 
                                      </a>
