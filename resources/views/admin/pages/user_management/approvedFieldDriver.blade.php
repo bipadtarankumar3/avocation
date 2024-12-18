@@ -19,7 +19,7 @@
 
         <div class="card p-4">
             <div class="table-responsive text-nowrap">
-                <table class="table" id="zero_config">
+                {{-- <table class="table" id="zero_config">
                     <thead>
                         <tr>
                             <th>Sl</th>
@@ -54,6 +54,73 @@
                             <td>Wb 20E 2356</td>
                             <td>Approved</td>
                         </tr>
+                    </tbody>
+                </table> --}}
+
+                <table class="table" id="zero_config">
+                    <thead>
+                        <tr>
+                            <th>Sl</th>
+                            <th>Actions</th>
+                            <th>User Type</th>
+                            <th>Selfie</th>
+                            <th>Name</th>
+                            <th>Code</th>
+                            <th>Location</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Vehicle Number</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach ($users as $key => $user)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            {{-- <a class="dropdown-item" href="{{ URL::to('admin/user/approved_user/' . $user->id) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a> --}}
+                                            <a href="javascript:void(0);" class="dropdown-item" 
+                                               onclick="viewDetails(
+                                                   '{{ $user->user_type }}', 
+                                                   '{{ $user->name }}', 
+                                                   '{{ $user->code }}', 
+                                                   '{{ $user->employee->emp_location }}', 
+                                                   '{{ $user->employee->emp_branch }}', 
+                                                   '{{ $user->employee->emp_function }}', 
+                                                   '{{ $user->phone }}', 
+                                                   '{{ $user->email }}', 
+                                                   '{{ $user->employee->emp_fm_vehicle_no }}', 
+                                                   '{{ $user->status }}', 
+                                                   '{{ asset($user->selfie ?? 'public/assets/admin/img/logo/default.jpg') }}', 
+                                                   '{{ asset($user->employee->emp_aadhar ?? 'public/assets/admin/img/logo/default.jpg') }}', 
+                                                   '{{ asset($user->employee->emp_pan ?? 'public/assets/admin/img/logo/default.jpg') }}'
+                                               )">View</a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ $user->user_type }}</td>
+                                <td>
+                                    <img src="{{ asset($user->selfie ?? 'public/assets/admin/img/logo/default.jpg') }}" 
+                                         alt="Selfie" width="100px" class="img-thumbnail" 
+                                         style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal" 
+                                         onclick="showImage('{{ asset($user->selfie ?? 'public/assets/admin/img/logo/default.jpg') }}')">
+                                </td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->code }}</td>
+                                <td>{{ $user->employee->emp_location }}</td>
+                                <td>{{ $user->phone }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->employee->emp_fm_vehicle_no }}</td>
+                                <td>{{ $user->status }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

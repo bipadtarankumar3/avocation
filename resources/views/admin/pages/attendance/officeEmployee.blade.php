@@ -26,6 +26,7 @@
                         <th>Name</th>
                         <th>Phone no</th>
                         <th>Check In Date Time</th>
+                        <th>Check Out Date Time</th>
                         <th>Place</th>
                         <th>Status</th>
                     </tr>
@@ -55,7 +56,18 @@
                             </td>
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->phone }}</td>
-                            <td>{{ \Carbon\Carbon::parse($employee->ckn_date)->format('d/m/Y h:i A') }}</td>
+                            <td>
+                                @if ($employee->ckn_in_out_status == 'in')
+                                  {{ \Carbon\Carbon::parse($employee->ckn_date)->format('d/m/Y h:i A') }}  
+                                @endif
+                                
+                            </td>
+                            <td>
+                                @if ($employee->ckn_in_out_status != 'in')
+                                  {{ \Carbon\Carbon::parse($employee->ckn_date)->format('d/m/Y h:i A') }}  
+                                @endif
+
+                            </td>
                             <td>{{ $employee->ckn_place }}</td>
                             <td>{{ ucfirst($employee->ckn_in_out_status) }}</td>
                         </tr>

@@ -33,6 +33,7 @@ class AttendanceController extends Controller
                 'check_in_checkouts.ckn_status',
                 'check_in_checkouts.id as checkin_id'
             )
+            ->orderBy('check_in_checkouts.id', 'desc')
             ->get();
     
         return view('admin.pages.attendance.officeEmployee', $data);
@@ -55,6 +56,7 @@ class AttendanceController extends Controller
                 'check_in_checkouts.ckn_status',
                 'check_in_checkouts.id as checkin_id'
             )
+            ->orderBy('check_in_checkouts.id', 'desc')
             ->get();
     
         return view('admin.pages.attendance.fieldDriver', $data);
@@ -77,6 +79,7 @@ class AttendanceController extends Controller
                 'check_in_checkouts.ckn_status',
                 'check_in_checkouts.id as checkin_id'
             )
+            ->orderBy('check_in_checkouts.id', 'desc')
             ->get();
     
         return view('admin.pages.attendance.salesEmployee', $data);

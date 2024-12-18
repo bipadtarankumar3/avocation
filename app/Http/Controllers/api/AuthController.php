@@ -38,9 +38,9 @@ class AuthController extends Controller
             if ($user) {
                 return response()->json([
                     'data' => [],
-                    'status' => 1,
+                    'status' =>0,
                     'message' => 'The email id is already registered.',
-                ]);
+                ],200);
             }
 
             $uploadedFiles = $this->uploadFiles($request, [
@@ -105,8 +105,8 @@ class AuthController extends Controller
             );
 
             return response()->json([
-                'data' => $userArray,
-                'status' => 1,
+                'data' =>[$userArray],
+                'status' => 0,
                 'message' => 'Employee registered successfully!',
             ]);
     
@@ -123,7 +123,7 @@ class AuthController extends Controller
                 'error' => 'Failed to register employee.',
                 'status' => 0,
                 'details' => $e->getMessage(),
-            ], 500);
+            ], 200);
         }
     }
 
@@ -179,8 +179,9 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
-                'status' => 0
-            ], 422);
+                'status' => 0,
+                'data' => []
+            ], 200);
         }
     }
     
@@ -220,7 +221,17 @@ public function login(Request $request)
         return response()->json([
             'message' => 'Invalid credentials',
             'status' => 0,
-        ], 401);
+            'token' => '',
+            'data' => [
+                'id' => '',
+                'company_id' => '',
+                'name' =>'',
+                'user_type' =>'',
+                'email' => '',
+                'phone' => '',
+                'otp' => ''
+            ],
+        ], 200);
     }
 
     $user = Auth::user();
@@ -230,28 +241,55 @@ public function login(Request $request)
         return response()->json([
             'message' => 'OTP is not verified. Please verify your OTP.',
             'status' => 0,
-        ], 403); // 403: Forbidden
+            'token' => '',
+            'data' => [
+                'id' => '',
+                'company_id' => '',
+                'name' =>'',
+                 'user_type' =>'',
+                'email' => '',
+                'phone' => '',
+                'otp' => ''
+            ],
+        ], 200); // 403: Forbidden
     }
     // Check if the user's status is inactive
     if ($user->status !== 'active') {
         return response()->json([
             'message' => 'Account is inactive. Please contact support.',
             'status' => 0,
-        ], 403); // 403: Forbidden
+            'token' => '',
+            'data' => [
+                'id' => '',
+                'company_id' => '',
+                'name' =>'',
+                 'user_type' =>'',
+                'email' => '',
+                'phone' => '',
+                'otp' => ''
+            ],
+        ], 200); // 403: Forbidden
     }
 
     // Generate access token
     $token = $user->createToken('API Token')->accessToken;
 
     // Convert user object to array and replace null values with empty strings
-    $userArray = $user->toArray();
-    $userArray = array_map(fn($value) => $value === null ? '' : $value, $userArray);
-
+    $userArray = array(
+        'id' => $user->id,
+        'company_id' => $user->company_id,
+        'name' => $user->name,
+        'user_type' => $user->user_type,
+        'email' => $user->email,
+        'phone' => $user->phone,
+        'otp' => $user->otp
+    );
+    
     return response()->json([
-        'user' => $userArray,
-        'token' => $token,
-        'status' => 1,
         'message' => 'Successfully logged in',
+        'status' => 1,
+        'token' => $token,
+        'user' => $userArray,
     ]);
 }
 
@@ -267,7 +305,7 @@ public function login(Request $request)
                 'message' => 'User not found.',
                 'status' => 0,
                 'data' => [],
-            ], 404);
+            ], 200);
         }
 
         return response()->json([
@@ -311,7 +349,7 @@ public function login(Request $request)
                         'message' => 'Please use register mobile number.',
                         'status' => 0,
                         'data' => [],
-                    ], 403); 
+                    ], 200); 
                 }
 
     
@@ -332,6 +370,7 @@ public function login(Request $request)
             $otp = $validatedData['otp'] ?? random_int(100000, 999999);
             // $otp = 123456;
     
+            date_default_timezone_set('Asia/Kolkata');
             // Insert the data into the database
             $checkInCheckout = new CheckInCheckout();
             $checkInCheckout->ckn_user_id = $validatedData['user_id'];
@@ -352,7 +391,7 @@ public function login(Request $request)
                 'message' => 'Data saved successfully.',
                 'otp' => $otp,
                 'status' =>1
-            ], 201);
+            ], 200);
     
         } catch (ValidationException $e) {
             // Return a custom JSON response for validation errors
@@ -360,7 +399,7 @@ public function login(Request $request)
                 'message' => 'Validation failed.',
                 'errors' => $e->errors(),
                 'status' => 0,
-            ], 422);
+            ], 200);
         }
     }
     
@@ -385,7 +424,7 @@ public function verify_otp(Request $request)
                 'message' => 'Invalid OTP.',
                 'status' => 0
 
-            ], 400);
+            ], 200);
         }
 
         // Mark the OTP as verified (optional, depending on your use case)
@@ -405,7 +444,7 @@ public function verify_otp(Request $request)
             'message' => 'Validation failed.',
             'errors' => $e->errors(),
             'status' => 0
-        ], 422);
+        ], 200);
     }
 }
 
