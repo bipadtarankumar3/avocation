@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Area;
+use App\Models\Logistic;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -40,6 +41,27 @@ class MasterController extends Controller
         return response()->json([
             'message' => 'area retrieved successfully.',
             'data' => $area,
+            'status' => 1
+        ]);
+    } 
+
+    public function logistic(Request $request)
+    {
+
+
+        $logistic =Logistic::get();
+
+        if (!$logistic) {
+            return response()->json([
+                'message' => 'area not found.',
+                'status' => 0,
+                'data' => [],
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'logistic retrieved successfully.',
+            'data' => $logistic,
             'status' => 1
         ]);
     } 

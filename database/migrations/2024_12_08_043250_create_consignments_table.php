@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('handling_cost_amount')->nullable();
             $table->string('other_employee')->nullable();
             $table->string('review_condition')->nullable();
+            $table->text('comments')->nullable();
             $table->text('picture')->nullable();
             $table->string('lat')->nullable();
             $table->string('long')->nullable();

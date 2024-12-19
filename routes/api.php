@@ -26,6 +26,7 @@ use App\Http\Controllers\api\MasterController;
 
 
 Route::get('/master/company', [CompanyController::class, 'companyList']);
+Route::get('/master/logistic', [MasterController::class, 'logistic']);
 Route::post('/employee_register', [AuthController::class, 'employee_register']);
 // Route::post('/field_employee_register', [AuthController::class, 'employee_register']);
 // Route::post('/sales_register', [AuthController::class, 'employee_register']);
@@ -44,6 +45,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/sales_create', [SalesController::class, 'sales_create']);
     Route::post('/consignment_create', [EmployeeController::class, 'consignment_create']);
+    Route::post('/consignment_fm_create', [EmployeeController::class, 'consignment_fm_create']);
     Route::post('/area', [MasterController::class, 'area']);
 
 });
